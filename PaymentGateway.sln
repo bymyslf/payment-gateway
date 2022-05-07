@@ -12,6 +12,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.UnitTests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Infrastructure", "PaymentGateway\src\PaymentGateway.Infrastructure\PaymentGateway.Infrastructure.csproj", "{E5BF87A8-80CD-45DD-A1B1-4E868D6777C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcquiringBankSimulator.Api", "AcquiringBankSimulator\src\AcquiringBankSimulator.Api\AcquiringBankSimulator.Api.csproj", "{183D0831-2B05-4447-AB54-C5E862E4DDFF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AcquiringBankSimulator", "AcquiringBankSimulator", "{6DE1856B-36D1-4F44-B9DA-313046A189D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7F69BF05-60DF-4964-8ECD-9B494922C129}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +29,8 @@ Global
 		{53C642BE-2EFD-4DB9-8D7E-4E4E39B410B5} = {1B3134D7-1FCC-4E2A-85B7-D41FAAE46911}
 		{9C59D592-B015-41BF-8365-B917BFDDC9B6} = {0A26E4D4-D313-4FA4-82E4-F0D1FEDAFE9A}
 		{E5BF87A8-80CD-45DD-A1B1-4E868D6777C0} = {1B3134D7-1FCC-4E2A-85B7-D41FAAE46911}
+		{7F69BF05-60DF-4964-8ECD-9B494922C129} = {6DE1856B-36D1-4F44-B9DA-313046A189D7}
+		{183D0831-2B05-4447-AB54-C5E862E4DDFF} = {7F69BF05-60DF-4964-8ECD-9B494922C129}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{53C642BE-2EFD-4DB9-8D7E-4E4E39B410B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -37,5 +45,9 @@ Global
 		{E5BF87A8-80CD-45DD-A1B1-4E868D6777C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5BF87A8-80CD-45DD-A1B1-4E868D6777C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5BF87A8-80CD-45DD-A1B1-4E868D6777C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{183D0831-2B05-4447-AB54-C5E862E4DDFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{183D0831-2B05-4447-AB54-C5E862E4DDFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{183D0831-2B05-4447-AB54-C5E862E4DDFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{183D0831-2B05-4447-AB54-C5E862E4DDFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
