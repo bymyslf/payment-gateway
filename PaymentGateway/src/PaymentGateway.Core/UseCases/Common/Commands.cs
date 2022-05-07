@@ -4,7 +4,7 @@ namespace PaymentGateway.Core.UseCases.Common;
 
 public interface ICommandHandler<in TCommand, TCommandResult>
 {
-    Task<TCommandResult> Handle(TCommand query, CancellationToken cancellation);
+    Task<TCommandResult> Handle(TCommand command, CancellationToken cancellation);
 }
 
 public interface ICommandDispatcher
