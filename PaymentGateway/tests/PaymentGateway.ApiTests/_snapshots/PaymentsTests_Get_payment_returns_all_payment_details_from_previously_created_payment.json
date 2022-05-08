@@ -1,0 +1,15 @@
+{
+  "id": "__IGNORED_VALUE__",
+  "amount": 1000,
+  "currency": "EUR",
+  "status": "Approved",
+  "processed_on": "__IGNORED_VALUE__",
+  "card": {
+    "type": "MasterCard",
+    "holder_name": "Test Run",
+    "number": "5436############",
+    "expire_month": 9,
+    "expire_year": 2023,
+    "cvv": 256
+  }
+}

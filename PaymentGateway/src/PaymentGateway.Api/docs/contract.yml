@@ -1,0 +1,295 @@
+openapi: 3.0.3
+
+info:
+  version: "1"
+  title: Payment Gateway API
+  description: Payment Gateway API
+
+servers:
+  - url: http://localhost:5270
+    description: "Local environment API Server"
+
+tags:
+  - name: Payments
+    description: Request cards payments
+
+# security:
+#   - BearerAuth: []
+
+paths:
+  /payments:
+    post:
+      description: Requests a card payment
+      tags:
+        - Payments
+      #parameters:
+        #- $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+            example:
+              amount: 1526963
+              currency: 'EUR'
+              card:
+                type: 'visa'
+                holder_name: 'Test'
+                number: '4242424242424242'
+                expire_month: 10
+                expire_year: 2025
+                cvv: 100
+                
+      responses:
+        202:
+          $ref: '#/components/responses/PaymentRequest_201'
+        400:
+          $ref: '#/components/responses/BadRequest'
+#        409:
+#          $ref: '#/components/responses/Conflict'
+        415:
+          $ref: '#/components/responses/InvalidMediaType'
+        422:
+          $ref: '#/components/responses/UnprocessableEntity'
+        5XX:
+          $ref: '#/components/responses/ServerError'
+  
+  /payments/{payment-id}:
+    get:
+      description: Retrieves a payment
+      tags:
+        - Payments
+      parameters:
+        - $ref: '#/components/parameters/PaymentID'
+      responses:
+        200:
+          $ref: '#/components/responses/GetPayment_200'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/NotFound'
+        415:
+          $ref: '#/components/responses/InvalidMediaType'
+        422:
+          $ref: '#/components/responses/UnprocessableEntity'
+        5XX:
+          $ref: '#/components/responses/ServerError'
+
+components:
+  # securitySchemes:
+  #   BearerAuth:
+  #     type: http
+  #     scheme: bearer
+  
+  parameters:
+    PaymentID:
+      name: payment-id
+      in: path
+      description: A payment identifier
+      required: true
+      schema:
+        type: string
+
+    # IdempotencyKey:
+    #   name: Idempotency-Key
+    #   description: | 
+    #     An idempotency key for safely retrying requests without accidentally performing the same operation twice. 
+    #     [Idempotency Header](https://tools.ietf.org/id/draft-idempotency-header-01.html)
+    #   in: header
+    #   required: false
+    #   schema:
+    #     type: string
+
+  responses:
+    
+    PaymentRequest_201:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentRequest_201'
+          examples:
+            payment_request:
+              $ref: '#/components/examples/PaymentRequest_201'
+
+    GetPayment_200:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetPayment_200'
+          examples:
+            payment_request:
+              $ref: '#/components/examples/GetPayment_200'
+                
+    BadRequest:
+      description: Invalid request parameters.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    NotFound:
+      description: An account number with the specified ID was not found.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    ServerError:
+      description: Unexpected error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    Conflict:
+      description: The current idempotent request is being processed
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    InvalidMediaType:
+      description: Invalid media type was specified in the `Accept` header (should be `application/json` or `application/hal+json`).
+
+    UnprocessableEntity:
+      description: Invalid fields
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  
+  schemas:
+
+    PaymentRequest_201:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    
+    GetPayment_200:
+      type: object
+      properties: 
+        amount:
+          type: integer
+          nullable: false
+        currency:
+          type: string
+          description: Three-letter payment [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
+          enum:
+            - EUR
+            - USD
+          nullable: false
+        status:
+          type: string
+          enum:
+            - pending
+            - approved
+            - declined
+          nullable: false
+        processed_on:
+          type: string
+          format: date-time
+          nullable: true
+        card:
+          $ref: '#/components/schemas/PaymentRequestCard'
+          
+    PaymentRequest:
+      type: object
+      properties: 
+        amount:
+          type: integer
+          nullable: false
+        currency:
+          type: string
+          description: Three-letter payment [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
+          enum:
+            - EUR
+            - USD
+          nullable: false
+        card:
+          $ref: '#/components/schemas/PaymentRequestCard'
+          
+    PaymentRequestCard:
+      type: object
+      properties: 
+        type:
+          type: string
+          enum:
+            - visa
+            - mastercard
+          nullable: false
+        holder_name:
+          type: string
+          nullable: false
+        number:
+          type: string
+          nullable: false
+        expire_month:
+          type: integer
+          nullable: false
+        expire_year:
+          type: integer
+          nullable: false
+        cvv:
+          type: integer
+          nullable: false
+          
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+        extensions:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+      additionalProperties:
+        type: object
+        additionalProperties: true
+  
+  examples:
+    
+    PaymentRequest_201:
+      value:
+        id: '573bc1cd-8dc0-4b6f-a33b-3d79fdf58fa3'
+        status: 'approved'
+    
+    GetPayment_200:
+      value:
+        amount: 1526963
+        currency: 'EUR'
+        status: 'declined'
+        processed_on: '2022-04-09T23:07:22Z'
+        card:
+          type: 'visa'
+          holder_name: 'Test'
+          number: '4242############'
+          expire_month: 10
+          expire_year: 2025
+          cvv: 100
+          
+    PaymentRequest:
+      value:
+        amount: 1526963
+        currency: 'EUR'
+        card:
+          type: 'visa'
+          holder_name: 'Test'
+          number: '4242424242424242'
+          expire_month: 10
+          expire_year: 2025
+          cvv: 100

@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  acquiring-bank:
+    build:
+      context: ./AcquiringBankSimulator/src/AcquiringBankSimulator.Api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - 5370:5370
+    networks:
+      - payment-gateway
+  
+  payment-api:
+    build:
+      context: ./PaymentGateway/src/PaymentGateway.Api
+    depends_on:
+      - acquiring-bank
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ACQUIRING_BANK_ENDPOINT: http://acquiring-bank:5370
+    ports:
+      - 5270:5270
+    networks:
+      - payment-gateway
+
+networks:
+  payment-gateway:
+    driver: bridge
