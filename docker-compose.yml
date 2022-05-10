@@ -3,7 +3,9 @@ version: '3.9'
 services:
   acquiring-bank:
     build:
-      context: ./AcquiringBankSimulator/src/AcquiringBankSimulator.Api
+      context: .
+      dockerfile: AcquiringBankSimulator/src/AcquiringBankSimulator.Api/Dockerfile
+    image: acquiring-bank
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     ports:
@@ -13,7 +15,9 @@ services:
   
   payment-api:
     build:
-      context: ./PaymentGateway/src/PaymentGateway.Api
+      context: .
+      dockerfile: PaymentGateway/src/PaymentGateway.Api/Dockerfile
+    image: payment-api
     depends_on:
       - acquiring-bank
     environment:

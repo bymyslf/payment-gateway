@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  payment-gateway-unittests:
+    build:
+      context: .
+      dockerfile: PaymentGateway/src/PaymentGateway.Api/Dockerfile
+      target: unittest
+      
+  payment-gateway-apitests:
+    build:
+      context: .
+      dockerfile: PaymentGateway/src/PaymentGateway.Api/Dockerfile
+      target: apitest
+  
+    
